@@ -7,17 +7,23 @@
   const PORT = process.env.PORT || 5000;
 
   // Middleware
-  app.use(cors(
-    {
-      origin: ["http://localhost:3000","https://my-to-do-app-blue.vercel.app/"], 
-      methods: "GET,POST,PUT,DELETE",
-      credentials: true,
-    }
-  ));
+const Origin = process.env.CLIENT_URL ? process.env.CLIENT_URL : ["http://localhost:5173/"];
+
+app.use(cors({
+  origin: Origin,
+  methods: "GET,POST,PUT,DELETE",
+  credentials: true,
+}));
+
   app.use(express.json());
 
   // Routes
   app.use("/api/todos", require("./routes/todoRoutes"));
+
+  app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
 
   // MongoDB connection
   mongoose
