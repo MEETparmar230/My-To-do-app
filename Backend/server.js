@@ -7,15 +7,16 @@
   const PORT = process.env.PORT || 5000;
 
   // Middleware
-const Origin = process.env.CLIENT_URL ? process.env.CLIENT_URL : ["http://localhost:5173/"];
-
 app.use(cors({
-  origin: Origin,
-  methods: "GET,POST,PUT,DELETE",
-  credentials: true,
+  origin: ["http://localhost:5173", "https://my-to-do-app-blue.vercel.app"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
 }));
 
-  app.use(express.json());
+
+app.options("*", cors()); 
+app.use(express.json());
+
 
   // Routes
   app.use("/api/todos", require("./routes/todoRoutes"));
