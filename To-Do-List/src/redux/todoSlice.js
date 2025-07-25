@@ -3,7 +3,7 @@ import axios from "axios";
 
 const url = import.meta.env.VITE_API_URL
 
-const API_URL = `${url}api/todos`;
+const API_URL = `${url}/api/todos`;
 
 
 // Helper to normalize todo objects
