@@ -55,6 +55,8 @@ export default function Todolist() {
     });
   };
 
+ 
+
   return (
     <div className="bg-zinc-100 min-h-screen p-4">
       <div className="max-w-lg mx-auto mt-10 p-6 rounded-lg shadow-lg bg-gray-100 border border-zinc-300">
@@ -101,7 +103,7 @@ export default function Todolist() {
                 </button>
                 <button
                   className="text-red-500 hover:text-red-700"
-                  onClick={() => handleDelete(todo._id || todo.id)} // Use either _id or id
+                  onClick={() => handleDelete(todo._id || todo.id)} 
                 >
                   <i className="fa-solid fa-trash"></i>
                 </button>
