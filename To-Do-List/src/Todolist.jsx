@@ -86,7 +86,7 @@ export default function Todolist() {
 
   return (
     <div className="p-4">
-      <div className="max-w-lg mx-auto mt-10 p-6 rounded-lg shadow-lg bg-gray-100 border border-zinc-300">
+      <div className="max-w-lg mx-auto md:mt-10 lg:mt-10 mt-5  p-6 rounded-lg shadow-lg bg-gray-100 border border-zinc-300">
         <ToastContainer />
         <h1 className="text-2xl font-bold text-center mb-4 text-zinc-700">Tasks</h1>
 
