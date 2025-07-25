@@ -33,3 +33,11 @@ TodoList/
 │ ├── index.js
 │ └── ...
 ├── README.md
+
+## setup
+
+create .env file
+
+```bash
+MONGO_URI=YOUR_ATLAS_LINK
+```

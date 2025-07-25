@@ -5,7 +5,7 @@ import Footer from './Footer'
 
 export default function App() {
   return (
-    <div>
+    <div className='bg-zinc-100 min-h-screen'>
       <Navbar/>
       <Todolist/>
       <Footer/>

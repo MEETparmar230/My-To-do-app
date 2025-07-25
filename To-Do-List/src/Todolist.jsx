@@ -1,135 +1,132 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  fetchTodos,
+  addTodo,
+  toggleTodo,
+  deleteTodo,
+  markAllAsDone,
+  deleteAllTodos
+} from './redux/todoSlice';
 
 export default function Todolist() {
-  const [todos, setTodos] = useState([]);
+  const dispatch = useDispatch();
+  const todos = useSelector((state) => state.todos.items);
   const [task, setTask] = useState("");
 
-  // Get all todos
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/todos")
-      .then((res) => setTodos(res.data))
-      .catch((err) => console.log(err));
-  }, []);
+    dispatch(fetchTodos());
+  }, [dispatch]);
 
-  // Add new task
   const addTask = () => {
-    if (!task) return;
-    axios
-      .post("http://localhost:5000/api/todos", { text: task })
-      .then((res) => {
-        setTodos([...todos, res.data]);
+    if (task.trim()) {
+      dispatch(addTodo(task)).then(() => {
         setTask("");
+        toast.success("Task added");
       });
+    }
   };
 
-  // Toggle
-  const toggleComplete = (id, completed) => {
-    axios
-      .put(`http://localhost:5000/api/todos/${id}`, {
-        completed: !completed,
-      })
-      .then((res) => {
-        setTodos(todos.map((todo) => (todo._id === id ? res.data : todo)));
-      });
-  };
-
-  // Delete task 
-  const deleteTodo = (id) => {
-    axios.delete(`http://localhost:5000/api/todos/${id}`).then(() => {
-      setTodos(todos.filter((todo) => todo._id !== id));
-    });
-  };
-
-  // Event handler for input
-  const updateTask = (event) => {
-    setTask(event.target.value);
-  };
-
-  // Mark all tasks as done
-  const markAllAsDone = () => {
-    const updatedTodos = todos.map((todo) => ({
-      ...todo,
-      completed: true,
+  const toggleComplete = (todo) => {
+    dispatch(toggleTodo({ 
+      id: todo._id || todo.id, // Handle both cases
+      completed: todo.completed 
     }));
-    setTodos(updatedTodos);
-    updatedTodos.forEach((todo) => {
-      if (!todo.completed) toggleComplete(todo._id, false);
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteTodo(id)).then(() => {
+      toast.success("Task deleted");
     });
   };
 
-  // Delete all tasks
-  const deleteAll = () => {
-    todos.forEach((todo) => {
-      deleteTodo(todo._id);
+  const updateTask = (event) => setTask(event.target.value);
+
+  const handleMarkAll = () => {
+    dispatch(markAllAsDone()).then(() => {
+      toast.success("All tasks marked as done");
+    });
+  };
+
+  const deleteAllTodo = () => {
+    dispatch(deleteAllTodos()).then(() => {
+      toast.success("All tasks deleted");
     });
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-2xl font-bold text-center mb-4">To-Do List</h1>
-      <div className="flex mb-4">
-        <input
-          type="text"
-          placeholder="Add a task"
-          className="flex-grow p-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          onChange={updateTask}
-          value={task}
-        />
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600"
-          onClick={addTask}
-        >
-          Add
-        </button>
+    <div className="bg-zinc-100 min-h-screen p-4">
+      <div className="max-w-lg mx-auto mt-10 p-6 rounded-lg shadow-lg bg-gray-100 border border-zinc-300">
+        <ToastContainer />
+        <h1 className="text-2xl font-bold text-center mb-4 text-zinc-700">Tasks</h1>
+        
+        <form className="flex mb-4" onSubmit={(e) => { e.preventDefault(); addTask(); }}>
+          <input
+            type="text"
+            placeholder="Add a task"
+            className="flex-grow p-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            onChange={updateTask}
+            value={task}
+          />
+          <button
+            type="submit" 
+            className="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600"
+          >
+            Add
+          </button>
+        </form>
+
+        <ul className="space-y-2">
+          {todos.map((todo) => (
+            <li
+              key={todo._id || todo.id} // Use either _id or id
+              className={`flex items-start p-2 border rounded ${
+                todo.completed ? "line-through text-gray-500" : ""
+              }`}
+            >
+              <div className="flex-1 min-w-0 pr-2">
+                <p className="break-words">{todo.text}</p>
+              </div>
+              <div className="flex-shrink-0 mt-1">
+                <button
+                  className="text-green-500 hover:text-green-700 mx-2"
+                  onClick={() => toggleComplete(todo)}
+                >
+                  {todo.completed ? (
+                    <i className="fa-solid fa-check-circle text-green-500"></i>
+                  ) : (
+                    <i className="fa-regular fa-circle text-gray-500"></i>
+                  )}
+                </button>
+                <button
+                  className="text-red-500 hover:text-red-700"
+                  onClick={() => handleDelete(todo._id || todo.id)} // Use either _id or id
+                >
+                  <i className="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        {todos.length > 0 && (
+          <div className="mt-4 flex justify-between">
+            <button
+              className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+              onClick={handleMarkAll}
+            >
+              Mark All as Done
+            </button>
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+              onClick={deleteAllTodo}
+            >
+              Delete All
+            </button>
+          </div>
+        )}
       </div>
-      <ul className="space-y-2">
-        {todos.map((todo) => (
-          <li
-            key={todo._id}
-            className={`flex justify-between items-center p-2 border rounded ${
-              todo.completed ? "line-through text-gray-500" : ""
-            }`}
-          >
-            {todo.text}
-            <div>
-              <button
-                className="text-green-500 hover:text-green-700 mx-2"
-                onClick={() => toggleComplete(todo._id, todo.completed)}
-              >
-                {todo.completed ? (
-                  <i className="fa-solid fa-check-circle text-green-500"></i>
-                ) : (
-                  <i className="fa-regular fa-circle text-gray-500"></i>
-                )}
-              </button>
-              <button
-                className="text-red-500 hover:text-red-700"
-                onClick={() => deleteTodo(todo._id)}
-              >
-                <i className="fa-solid fa-trash"></i>
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
-      {todos.length > 0 && (
-        <div className="mt-4 flex justify-between">
-          <button
-            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-            onClick={markAllAsDone}
-          >
-            Mark All as Done
-          </button>
-          <button
-            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-            onClick={deleteAll}
-          >
-            Delete All
-          </button>
-        </div>
-      )}
     </div>
   );
 }
