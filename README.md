@@ -1,6 +1,12 @@
 # TodoList App
 
-A full-stack Todo List application built with **Express**, **MongoDB**, **React**, and **Redux Toolkit**.
+A full-stack Todo List application built with **Express**, **MongoDB Atlas**, **React**, and **Redux Toolkit**.
+
+## Deployment
+
+Frontend (https://my-to-do-app-blue.vercel.app/)
+
+Backend  (https://my-to-do-app-g37h.onrender.com/api/todos)
 
 ## Features
 
