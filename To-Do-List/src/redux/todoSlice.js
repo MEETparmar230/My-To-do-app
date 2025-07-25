@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/todos';
+const url = import.meta.env.VITE_API_URL
+
+const API_URL = `${url}/api/todos`
 
 // Helper to normalize todo objects
 const normalizeTodo = (todo) => ({
@@ -42,9 +44,11 @@ export const deleteAllTodos = createAsyncThunk('todos/deleteAllTodos', async () 
 const todoSlice = createSlice({
   name: 'todos',
   initialState: {
-    items: [],
-    loading: false
-  },
+  items: [],
+  loading: false,
+  error: null
+}
+,
   reducers: {},
   extraReducers: (builder) => {
     builder
