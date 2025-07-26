@@ -37,7 +37,7 @@ Backend  (https://my-to-do-app-g37h.onrender.com/api/todos)
 1. Clone the repo:
 
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/MEETparmar230/My-To-do-app
    cd Backend
 
 
