@@ -6,7 +6,7 @@ A full-stack Todo List application built with **Express**, **MongoDB Atlas**, **
 
 Frontend (https://my-to-do-app-blue.vercel.app/)
 
-Backend  (https://my-to-do-app-g37h.onrender.com/api/todos)
+Backend(Node)  (https://my-to-do-app-g37h.onrender.com/api/todos)
 
 ## Features
 
@@ -20,26 +20,27 @@ Backend  (https://my-to-do-app-g37h.onrender.com/api/todos)
 
 ## Tech Stack
 
-- **Backend:** Node.js, Express, Mongoose, MongoDB, CORS
+- **Backend(Java):** SpringBoot, lombok, Mongodb
+- **Backend(Node):** Node.js, Express, Mongoose, MongoDB, CORS
 - **Frontend:** React, Redux Toolkit, Axios, React Toastify, Tailwind CSS
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v16+ recommended)
+- Node.js (v16+) or Java (17+)
 - MongoDB instance (local or cloud)
-- Yarn or npm
+- npm or mvn
 - Git
 
-### Backend Setup
+### Backend Setup(Node)
 
 1. Clone the repo:
 
-   ```bash
-   git clone https://github.com/MEETparmar230/My-To-do-app
-   cd Backend
-
+```bash
+git clone https://github.com/MEETparmar230/My-To-do-app
+cd Backend
+```
 
 2. Install dependencies:
 
@@ -62,6 +63,30 @@ npm run dev
 
 Server runs on http://localhost:5000 by default.
 
+### Backend Setup(Java)
+
+1. Clone the repo:
+
+```bash
+git clone https://github.com/MEETparmar230/My-To-do-app
+cd Backend_SpringBoot
+```
+
+2. Open src/main/resources/application.properties and configure:
+
+```bash
+spring.application.name=TodoList
+server.port=8080
+spring.data.mongodb.uri=your mongo URI
+spring.data.mongodb.database=your mongo Database name
+```
+
+3. Build and run the application:
+
+```bash
+./mvnw spring-boot:run
+```
+Server runs on http://localhost:8080 by default.
 
 ### Frontend Setup
 
