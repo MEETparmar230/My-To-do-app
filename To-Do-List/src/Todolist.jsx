@@ -114,7 +114,7 @@ export default function Todolist() {
                 }`}
             >
               <div className="flex-1 min-w-0 pr-2">
-                <p className="break-words">{todo.text}</p>
+                <p className="break-words">{todo.title}</p>
               </div>
               <div className="flex-shrink-0 mt-1">
                 <button

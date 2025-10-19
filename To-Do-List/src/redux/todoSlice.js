@@ -4,18 +4,19 @@ import axios from "axios";
 const url = import.meta.env.VITE_API_URL;
 const API_URL = `${url}/api/todos`;
 
-const normalizeTodo = (todo) => ({
-  ...todo,
-  id: todo._id || todo.id,
-});
+const normalizeTodo = (todo) => {
+  if (!todo) return {};
+  return { ...todo, id: todo._id || todo.id };
+};
+
 
 export const fetchTodos = createAsyncThunk("todos/fetchTodos", async () => {
   const response = await axios.get(API_URL);
   return response.data.map(normalizeTodo);
 });
 
-export const addTodo = createAsyncThunk("todos/addTodo", async (text) => {
-  const response = await axios.post(API_URL, { text });
+export const addTodo = createAsyncThunk("todos/addTodo", async (title) => {
+  const response = await axios.post(API_URL, { title });
   return normalizeTodo(response.data.saved);
 });
 
